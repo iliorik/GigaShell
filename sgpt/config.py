@@ -48,9 +48,17 @@ class Config(dict):  # type: ignore
         else:
             config_path.parent.mkdir(parents=True, exist_ok=True)
             # Don't write API key to config file if it is in the environment.
-            if not defaults.get("OPENAI_API_KEY") and not os.getenv("OPENAI_API_KEY"):
-                __api_key = getpass(prompt="Please enter your OpenAI API key: ")
-                defaults["OPENAI_API_KEY"] = __api_key
+            if not defaults.get("GIGA_USERNAME") and not os.getenv("GIGA_USERNAME"):
+                __username = input("Please enter GigaChat username: ")
+                defaults["GIGA_USERNAME"] = __username
+
+            if not defaults.get("GIGA_PASSWORD") and not os.getenv("GIGA_PASSWORD"):
+                __password = getpass(prompt="Please enter GigaChat password: ")
+                defaults["GIGA_PASSWORD"] = __password
+
+            if not defaults.get("GIGACHAT_API_HOST") and not os.getenv("GIGACHAT_API_HOST"):
+                __username = input("Please enter GigaChat host with 70b model: ")
+                defaults["GIGACHAT_API_HOST"] = __username
             super().__init__(**defaults)
             self._write()
 

@@ -2,15 +2,15 @@ from typing import Any, Dict, Generator, List
 
 import typer
 
-from ..client import OpenAIClient
+from ..client import GigaChatClient
 from ..config import cfg
 from ..role import SystemRole
 
 
 class Handler:
     def __init__(self, role: SystemRole) -> None:
-        self.client = OpenAIClient(
-            cfg.get("OPENAI_API_HOST"), cfg.get("OPENAI_API_KEY")
+        self.client = GigaChatClient(
+            cfg.get("GIGACHAT_API_HOST"), cfg.get("GIGA_USERNAME"), cfg.get("GIGA_PASSWORD")
         )
         self.role = role
         self.color = cfg.get("DEFAULT_COLOR")

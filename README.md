@@ -1,41 +1,45 @@
-# ShellGPT
-A command-line productivity tool powered by AI large language models (LLM). As developers, we can leverage AI capabilities to generate shell commands, code snippets, comments, and documentation, among other things. Forget about cheat sheets and notes, with this tool you can get accurate answers right in your terminal, and you'll probably find yourself reducing your daily Google searches, saving you valuable time and effort. ShellGPT is cross-platform compatible and supports all major operating systems, including Linux, macOS, and Windows with all major shells, such as PowerShell, CMD, Bash, Zsh, Fish, and many others.
+# GigaShell
+Онлайн-инструмент для повышения продуктивности, работающий на основе больших языковых моделей. Как разработчики, мы можем использовать возможности ИИ для генерации команд оболочки, фрагментов кода, комментариев и документации, среди прочего. Забудьте о шпаргалках и заметках, с помощью этого инструмента вы можете получить точные ответы прямо в своем терминале, и вы, вероятно, обнаружите, что сокращаете свои ежедневные поиски в Google, экономя ваше драгоценное время и усилия. ShellGPT совместим с несколькими платформами и поддерживает все основные операционные системы, включая Linux, macOS и Windows, а также все основные оболочки, такие как PowerShell, CMD, Bash, Zsh, Fish и многие другие.
 
 https://user-images.githubusercontent.com/16740832/231569156-a3a9f9d4-18b1-4fff-a6e1-6807651aa894.mp4
 
+Является форком библиотеки ShellGPT, адаптированым для русского языка и работы с GigaChat
+
 ## Installation
 ```shell
-pip install shell-gpt
+pip install git+https://github.com/Rai220/GigaShell.git
 ```
+<!--
 You'll need an OpenAI API key, you can generate one [here](https://beta.openai.com/account/api-keys).
 
 If the`$OPENAI_API_KEY` environment variable is set it will be used, otherwise, you will be prompted for your key which will then be stored in `~/.config/shell_gpt/.sgptrc`.
+-->
 
 ## Usage
-`sgpt` has a variety of use cases, including simple queries, shell queries, and code queries.
+`giga` has a variety of use cases, including simple queries, shell queries, and code queries.
 ### Simple queries
 We can use it as normal search engine, asking about anything:
 ```shell
-sgpt "nginx default config file location"
+giga "nginx default config file location"
 # -> The default configuration file for Nginx is located at /etc/nginx/nginx.conf.
 ```
 ```shell
-sgpt "mass of sun"
+giga "mass of sun"
 # -> = 1.99 × 10^30 kg
 ```
 ```shell
-sgpt "1 hour and 30 minutes to seconds"
+giga "1 hour and 30 minutes to seconds"
 # -> 5,400 seconds
 ```
 ### Summarization and analyzing
 ShellGPT accepts prompt from both stdin and command line argument, you choose the most convenient input method for your preferences. Whether you prefer piping input through the terminal or specifying it directly as arguments, `sgpt` got you covered. This versatile feature is particularly useful when you need to pass file content or pipe output from other commands to the GPT models for summarization or analysis. For example, you can easily generate a git commit message based on a diff:
 ```shell
-git diff | sgpt "Generate git commit message, for my changes"
+git diff | giga "Generate git commit message, for my changes"
 # -> Commit message: Implement Model enum and get_edited_prompt()
 ```
 You can analyze logs from various sources by passing them using stdin or command line arguments, along with a user-friendly prompt. This enables you to quickly identify errors and get suggestions for possible solutions:
 ```shell
-docker logs -n 20 container_name | sgpt "check logs, find errors, provide possible solutions"
+docker logs -n 20 container_name | giga "check logs, find errors, provide possible solutions"
 # ...
 ```
 This powerful feature simplifies the process of managing and understanding data from different sources, making it easier for you to focus on what really matters: improving your projects and applications.
@@ -43,28 +47,28 @@ This powerful feature simplifies the process of managing and understanding data 
 ### Shell commands
 Have you ever found yourself forgetting common shell commands, such as `chmod`, and needing to look up the syntax online? With `--shell` or shortcut `-s` option, you can quickly find and execute the commands you need right in the terminal.
 ```shell
-sgpt --shell "make all files in current directory read only"
+giga --shell "make all files in current directory read only"
 # -> chmod 444 *
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
 Shell GPT is aware of OS and `$SHELL` you are using, it will provide shell command for specific system you have. For instance, if you ask `sgpt` to update your system, it will return a command based on your OS. Here's an example using macOS:
 ```shell
-sgpt -s "update my system"
+giga -s "update my system"
 # -> sudo softwareupdate -i -a
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
 The same prompt, when used on Ubuntu, will generate a different suggestion:
 ```shell
-sgpt -s "update my system"
+giga -s "update my system"
 # -> sudo apt update && sudo apt upgrade -y
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
 We can ask GPT to describe suggested shell command, it will provide a short description of what the command does:
 ```shell
-sgpt -s "show all txt files in current folder"
+giga -s "show all txt files in current folder"
 # -> ls *.txt
 # -> [E]xecute, [D]escribe, [A]bort: d
 # -> List all files with .txt extension in current directory
@@ -73,33 +77,33 @@ sgpt -s "show all txt files in current folder"
 ```
 Let's try some docker containers:
 ```shell
-sgpt -s "start nginx using docker, forward 443 and 80 port, mount current folder with index.html"
+giga -s "start nginx using docker, forward 443 and 80 port, mount current folder with index.html"
 # -> docker run -d -p 443:443 -p 80:80 -v $(pwd):/usr/share/nginx/html nginx
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
 We can still use pipes to pass input to `sgpt` and get shell commands as output:
 ```shell
-cat data.json | sgpt -s "curl localhost with provided json"
+cat data.json | giga -s "curl localhost with provided json"
 # -> curl -X POST -H "Content-Type: application/json" -d '{"a": 1, "b": 2, "c": 3}' http://localhost
 ````
 We can apply additional shell magic in our prompt, in this example passing file names to ffmpeg:
 ```shell
 ls
 # -> 1.mp4 2.mp4 3.mp4
-sgpt -s "using ffmpeg combine multiple videos into one without audio. Video file names: $(ls -m)"
+giga -s "using ffmpeg combine multiple videos into one without audio. Video file names: $(ls -m)"
 # -> ffmpeg -i 1.mp4 -i 2.mp4 -i 3.mp4 -filter_complex "[0:v] [1:v] [2:v] concat=n=3:v=1 [v]" -map "[v]" out.mp4
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
 ### Shell integration
-Shell integration allows you to use Shell-GPT in your terminal with hotkeys. It is currently available for bash and zsh. It will allow you to have sgpt completions in your shell history, and also edit suggested commands right away.
+Shell integration allows you to use Shell-GPT in your terminal with hotkeys. It is currently available for bash and zsh. It will allow you to have giga completions in your shell history, and also edit suggested commands right away.
 
 https://github.com/TheR1D/shell_gpt/assets/16740832/bead0dab-0dd9-436d-88b7-6abfb2c556c1
 
 To install shell integration, run:
 ```shell
-sgpt --install-integration
+giga --install-integration
 # Restart your terminal to apply changes.
 ```
 This will add few lines to your `.bashrc` or `.zshrc` file. After that, you can use `Ctrl+l` (by default) to invoke Shell-GPT. When you press `Ctrl+l` it will replace you current input line (buffer) with suggested command. You can then edit it and press `Enter` to execute.
@@ -107,7 +111,7 @@ This will add few lines to your `.bashrc` or `.zshrc` file. After that, you can 
 ### Generating code
 With `--code` parameters we can query only code as output, for example:
 ```shell
-sgpt --code "Solve classic fizz buzz problem using Python"
+giga --code "Solve classic fizz buzz problem using Python"
 ```
 ```python
 for i in range(1, 101):
@@ -122,7 +126,7 @@ for i in range(1, 101):
 ```
 Since it is valid python code, we can redirect the output to file:
 ```shell
-sgpt --code "solve classic fizz buzz problem using Python" > fizz_buzz.py
+giga --code "solve classic fizz buzz problem using Python" > fizz_buzz.py
 python fizz_buzz.py
 # 1
 # 2
@@ -134,7 +138,7 @@ python fizz_buzz.py
 ```
 We can also use pipes to pass input to `sgpt`:
 ```shell
-cat fizz_buzz.py | sgpt --code "Generate comments for each line of my code"
+cat fizz_buzz.py | giga --code "Generate comments for each line of my code"
 ```
 ```python
 # Loop through numbers 1 to 100
@@ -166,13 +170,13 @@ Dialogues had in both REPL and chat mode are saved as chat sessions.
 
 To list all the sessions from either conversational mode, use the `--list-chats` option:
 ```shell
-sgpt --list-chats
+giga --list-chats
 # .../shell_gpt/chat_cache/number
 # .../shell_gpt/chat_cache/python_request
 ```
 To show all the messages related to a specific conversation, use the `--show-chat` option followed by the session name:
 ```shell
-sgpt --show-chat number
+giga --show-chat number
 # user: please remember my favorite number: 4
 # assistant: I will remember that your favorite number is 4.
 # user: what would be my favorite number + 4?
@@ -182,14 +186,14 @@ sgpt --show-chat number
 ### Chat Mode
 To start a chat session, use the `--chat` option followed by a unique session name and a prompt. You can also use "temp" as a session name to start a temporary chat session.
 ```shell
-sgpt --chat number "please remember my favorite number: 4"
+giga --chat number "please remember my favorite number: 4"
 # -> I will remember that your favorite number is 4.
-sgpt --chat number "what would be my favorite number + 4?"
+giga --chat number "what would be my favorite number + 4?"
 # -> Your favorite number is 4, so if we add 4 to it, the result would be 8.
 ```
 You can also use chat sessions to iteratively improve GPT suggestions by providing additional clues.
 ```shell
-sgpt --chat python_request --code "make an example request to localhost using Python"
+giga --chat python_request --code "make an example request to localhost using Python"
 ```
 ```python
 import requests
@@ -199,7 +203,7 @@ print(response.text)
 ```
 Asking AI to add a cache to our request.
 ```shell
-sgpt --chat python_request --code "add caching"
+giga --chat python_request --code "add caching"
 ```
 ```python
 import requests
@@ -213,13 +217,13 @@ print(response.text)
 ```
 We can use `--code` or `--shell` options to initiate `--chat`, so you can keep refining the results:
 ```shell
-sgpt --chat sh --shell "What are the files in this directory?"
+giga --chat sh --shell "What are the files in this directory?"
 # -> ls
-sgpt --chat sh "Sort them by name"
+giga --chat sh "Sort them by name"
 # -> ls | sort
-sgpt --chat sh "Concatenate them using FFMPEG"
+giga --chat sh "Concatenate them using FFMPEG"
 # -> ffmpeg -i "concat:$(ls | sort | tr '\n' '|')" -codec copy output.mp4
-sgpt --chat sh "Convert the resulting file into an MP3"
+giga --chat sh "Convert the resulting file into an MP3"
 # -> ffmpeg -i output.mp4 -vn -acodec libmp3lame -ac 2 -ab 160k -ar 48000 final_output.mp3
 ```
 
@@ -231,7 +235,7 @@ There is very handy REPL (read–eval–print loop) mode, which allows you to in
 </p>
 
 ```text
-sgpt --repl temp
+giga --repl temp
 Entering REPL mode, press Ctrl+C to exit.
 >>> What is REPL?
 REPL stands for Read-Eval-Print Loop. It is a programming environment ...
@@ -240,7 +244,7 @@ To use Python with REPL, you can simply open a terminal or command prompt ...
 ```
 REPL mode can work with `--shell` and `--code` options, which makes it very handy for interactive shell commands and code generation:
 ```text
-sgpt --repl temp --shell
+giga --repl temp --shell
 Entering shell REPL mode, type [e] to execute commands or press Ctrl+C to exit.
 >>> What is in current folder?
 ls
@@ -253,7 +257,7 @@ ls -lhS
 ```
 Example of using REPL mode to generate code:
 ```text
-sgpt --repl temp --code
+giga --repl temp --code
 Entering REPL mode, press Ctrl+C to exit.
 >>> Using Python request localhost:80
 import requests
@@ -268,7 +272,7 @@ print(response.text)
 ### Picking up on a chat mode conversation with REPL mode
 
 ```text
-sgpt --repl number
+giga --repl number
 ───── Chat History──────
 user: ###
 Role name: default
@@ -293,10 +297,10 @@ The sum of your favorite number (4) and my previous response (256) would be 260.
 ### Roles
 ShellGPT allows you to create custom roles, which can be utilized to generate code, shell commands, or to fulfill your specific needs. To create a new role, use the `--create-role` option followed by the role name. You will be prompted to provide a description for the role, along with other details. This will create a JSON file in `~/.config/shell_gpt/roles` with the role name. Inside this directory, you can also edit default `sgpt` roles, such as **shell**, **code**, and **default**. Use the `--list-roles` option to list all available roles, and the `--show-role` option to display the details of a specific role. Here's an example of a custom role:
 ```shell
-sgpt --create-role json
+giga --create-role json
 # Enter role description: You are JSON generator, provide only valid json as response.
 # Enter expecting result, e.g. answer, code, shell command, etc.: json
-sgpt --role json "random: user, password, email, address"
+giga --role json "random: user, password, email, address"
 {
   "user": "JohnDoe",
   "password": "p@ssw0rd",
@@ -313,20 +317,21 @@ sgpt --role json "random: user, password, email, address"
 ### Request cache
 Control cache using `--cache` (default) and `--no-cache` options. This caching applies for all `sgpt` requests to OpenAI API:
 ```shell
-sgpt "what are the colors of a rainbow"
+giga "what are the colors of a rainbow"
 # -> The colors of a rainbow are red, orange, yellow, green, blue, indigo, and violet.
 ```
-Next time, same exact query will get results from local cache instantly. Note that `sgpt "what are the colors of a rainbow" --temperature 0.5` will make a new request, since we didn't provide `--temperature` (same applies to `--top-probability`) on previous request.
+Next time, same exact query will get results from local cache instantly. Note that `giga "what are the colors of a rainbow" --temperature 0.5` will make a new request, since we didn't provide `--temperature` (same applies to `--top-probability`) on previous request.
 
 This is just some examples of what we can do using OpenAI GPT models, I'm sure you will find it useful for your specific use cases.
 
 ### Runtime configuration file
 You can setup some parameters in runtime configuration file `~/.config/shell_gpt/.sgptrc`:
 ```text
-# API key, also it is possible to define OPENAI_API_KEY env.
-OPENAI_API_KEY=your_api_key
+# Credentionals to access GigaChat
+GIGA_USERNAME=your username
+GIGA_PASSWORD=your password
 # OpenAI host, useful if you would like to use proxy.
-OPENAI_API_HOST=https://api.openai.com
+GIGACHAT_API_HOST=https://...
 # Max amount of cached message per chat session.
 CHAT_CACHE_LENGTH=100
 # Chat cache folder.
@@ -400,12 +405,12 @@ Example of a conversation, using an alias and the `OPENAI_API_KEY` environment v
 ```shell
 alias sgpt="docker run --rm --env OPENAI_API_KEY --volume gpt-cache:/tmp/shell_gpt ghcr.io/ther1d/shell_gpt"
 export OPENAI_API_KEY="your OPENAI API key"
-sgpt --chat rainbow "what are the colors of a rainbow"
-sgpt --chat rainbow "inverse the list of your last answer"
-sgpt --chat rainbow "translate your last answer in french"
+giga --chat rainbow "what are the colors of a rainbow"
+giga --chat rainbow "inverse the list of your last answer"
+giga --chat rainbow "translate your last answer in french"
 ```
 
 You also can use the provided `Dockerfile` to build your own image:
 ```shell
-docker build -t sgpt .
+docker build -t giga .
 ```

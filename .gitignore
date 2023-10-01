@@ -1,0 +1,4 @@
+venv/*
+sgpt/__pycache__/*
+sgpt/handlers/__pycache__/*
+.vscode/*
