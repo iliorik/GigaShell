@@ -1,8 +1,5 @@
-import json
 from pathlib import Path
 from typing import Dict, Generator, List
-
-import requests
 
 from langchain.chat_models import GigaChat
 from langchain.schema import HumanMessage, AIMessage
@@ -30,7 +27,7 @@ class GigaChatClient:
     def _request(
         self,
         messages: List[Dict[str, str]],
-        model: str = "gpt-3.5-turbo",
+        model: str = "GigaChat70:latest",
         temperature: float = 1,
         top_probability: float = 1,
     ) -> Generator[str, None, None]:
@@ -45,25 +42,27 @@ class GigaChatClient:
         :return: Response body JSON.
         """
         stream = DISABLE_STREAMING == "false"
-        data = {
-            "messages": messages,
-            "model": model,
-            "temperature": temperature,
-            "top_p": top_probability,
-            "stream": stream,
-        }
+        # data = {
+        #     "messages": messages,
+        #     "model": model,
+        #     "temperature": temperature,
+        #     "top_p": top_probability,
+        #     "stream": stream,
+        # }
         giga_messages = []
         for m in messages:
             if m['role'] == 'user':
                 giga_messages.append(HumanMessage(content=m['content']))
             if m['role'] == 'assistant':
                 giga_messages.append(AIMessage(content=m['content']))
-        res = self.giga(giga_messages)
+        res = self.giga(giga_messages).content
+        if res.startswith("`") and res.endswith("`"):
+            res = res[1:-1]
         if not stream:
-            yield str(res.content)
+            yield str(res)
             return
         else:
-            yield str(res.content)
+            yield str(res)
             return
 
         # endpoint = f"{self.api_host}/v1/chat/completions"

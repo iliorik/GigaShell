@@ -103,7 +103,7 @@ class SystemRole:
             return None
         message_lines = initial_message.splitlines()
         if "###" in message_lines[0]:
-            return message_lines[1].split("Role name: ")[1].strip()
+            return message_lines[1].split("Роль: ")[1].strip()
         return None
 
     @classmethod
