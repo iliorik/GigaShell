@@ -34,5 +34,4 @@ jobs:
       run: mypy giga
     - name: unittests
       run: |
-        export OPENAI_API_KEY=test_api_key
         pytest tests/test_unit.py
