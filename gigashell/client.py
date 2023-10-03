@@ -22,9 +22,8 @@ class GigaChatClient:
         self.giga = GigaChat(
             user=username,
             password=password,
-            verify_ssl=False,
-            oauth_verify_ssl=False,
-            api_base_url=api_host,
+            verify_ssl_certs=False,
+            base_url=api_host,
             model=DEFAULT_MODEL,
         )
 

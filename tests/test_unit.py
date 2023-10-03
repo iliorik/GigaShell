@@ -4,7 +4,7 @@ import unittest
 import requests
 import requests_mock
 
-from giga.client import GigaChatClient
+from gigashell.client import GigaChatClient
 
 
 class TestMain(unittest.TestCase):
