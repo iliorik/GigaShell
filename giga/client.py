@@ -11,6 +11,7 @@ CACHE_LENGTH = int(cfg.get("CACHE_LENGTH"))
 CACHE_PATH = Path(cfg.get("CACHE_PATH"))
 REQUEST_TIMEOUT = int(cfg.get("REQUEST_TIMEOUT"))
 DISABLE_STREAMING = str(cfg.get("DISABLE_STREAMING"))
+DEFAULT_MODEL = str(cfg.get("DEFAULT_MODEL"))
 
 
 class GigaChatClient:
@@ -18,16 +19,19 @@ class GigaChatClient:
 
     def __init__(self, api_host: str, username: str, password: str) -> None:
         self.api_host = api_host
-        self.giga = GigaChat(user = username, password = password, verify_ssl=False, 
-                             oauth_verify_ssl=False,
-                             api_base_url=api_host, 
-                             model="GigaChat70:latest")
+        self.giga = GigaChat(
+            user=username,
+            password=password,
+            verify_ssl=False,
+            oauth_verify_ssl=False,
+            api_base_url=api_host,
+            model=DEFAULT_MODEL,
+        )
 
     @cache
     def _request(
         self,
         messages: List[Dict[str, str]],
-        model: str = "GigaChat70:latest",
         temperature: float = 1,
         top_probability: float = 1,
     ) -> Generator[str, None, None]:
@@ -36,25 +40,17 @@ class GigaChatClient:
         https://platform.openai.com/docs/api-reference/chat
 
         :param messages: List of messages {"role": user or assistant, "content": message_string}
-        :param model: String gpt-3.5-turbo or gpt-3.5-turbo-0301
         :param temperature: Float in 0.0 - 2.0 range.
         :param top_probability: Float in 0.0 - 1.0 range.
         :return: Response body JSON.
         """
         stream = DISABLE_STREAMING == "false"
-        # data = {
-        #     "messages": messages,
-        #     "model": model,
-        #     "temperature": temperature,
-        #     "top_p": top_probability,
-        #     "stream": stream,
-        # }
         giga_messages = []
         for m in messages:
-            if m['role'] == 'user':
-                giga_messages.append(HumanMessage(content=m['content']))
-            if m['role'] == 'assistant':
-                giga_messages.append(AIMessage(content=m['content']))
+            if m["role"] == "user":
+                giga_messages.append(HumanMessage(content=m["content"]))
+            if m["role"] == "assistant":
+                giga_messages.append(AIMessage(content=m["content"]))
         res = self.giga(giga_messages).content
         if res.startswith("`") and res.endswith("`"):
             res = res[1:-1]
@@ -99,7 +95,6 @@ class GigaChatClient:
     def get_completion(
         self,
         messages: List[Dict[str, str]],
-        model: str = "gpt-3.5-turbo",
         temperature: float = 1,
         top_probability: float = 1,
         caching: bool = True,
@@ -108,7 +103,6 @@ class GigaChatClient:
         Generates single completion for prompt (message).
 
         :param messages: List of dict with messages and roles.
-        :param model: String gpt-3.5-turbo or gpt-3.5-turbo-0301.
         :param temperature: Float in 0.0 - 1.0 range.
         :param top_probability: Float in 0.0 - 1.0 range.
         :param caching: Boolean value to enable/disable caching.
@@ -116,7 +110,6 @@ class GigaChatClient:
         """
         yield from self._request(
             messages,
-            model,
             temperature,
             top_probability,
             caching=caching,

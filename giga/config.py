@@ -13,7 +13,7 @@ ROLE_STORAGE_PATH = GIGA_SHELL_CONFIG_FOLDER / "roles"
 CHAT_CACHE_PATH = Path(gettempdir()) / "chat_cache"
 CACHE_PATH = Path(gettempdir()) / "cache"
 
-# TODO: Refactor ENV variables with SGPT_ prefix.
+# TODO: Refactor ENV variables with GIGA_ prefix.
 DEFAULT_CONFIG = {
     # TODO: Refactor it to CHAT_STORAGE_PATH.
     "CHAT_CACHE_PATH": os.getenv("CHAT_CACHE_PATH", str(CHAT_CACHE_PATH)),
@@ -21,8 +21,7 @@ DEFAULT_CONFIG = {
     "CHAT_CACHE_LENGTH": int(os.getenv("CHAT_CACHE_LENGTH", "100")),
     "CACHE_LENGTH": int(os.getenv("CHAT_CACHE_LENGTH", "100")),
     "REQUEST_TIMEOUT": int(os.getenv("REQUEST_TIMEOUT", "60")),
-    "DEFAULT_MODEL": os.getenv("DEFAULT_MODEL", "gpt-3.5-turbo"),
-    "OPENAI_API_HOST": os.getenv("OPENAI_API_HOST", "https://api.openai.com"),
+    "DEFAULT_MODEL": os.getenv("DEFAULT_MODEL", "GigaChat70:latest"),
     "DEFAULT_COLOR": os.getenv("DEFAULT_COLOR", "magenta"),
     "ROLE_STORAGE_PATH": os.getenv("ROLE_STORAGE_PATH", str(ROLE_STORAGE_PATH)),
     "SYSTEM_ROLES": os.getenv("SYSTEM_ROLES", "false"),
@@ -56,9 +55,16 @@ class Config(dict):  # type: ignore
                 __password = getpass(prompt="Please enter GigaChat password: ")
                 defaults["GIGA_PASSWORD"] = __password
 
-            if not defaults.get("GIGACHAT_API_HOST") and not os.getenv("GIGACHAT_API_HOST"):
-                __username = input("Please enter GigaChat host with 70b model: ")
-                defaults["GIGACHAT_API_HOST"] = __username
+            if not defaults.get("GIGACHAT_API_HOST") and not os.getenv(
+                "GIGACHAT_API_HOST"
+            ):
+                __default_host = "https://wmapi-dev.saluteai-pd.sberdevices.ru/v1/"
+                __host = input(
+                    f"Please enter GigaChat host with 70b model [{__default_host}]: "
+                )
+                if __host == "":
+                    __host = __default_host
+                defaults["GIGACHAT_API_HOST"] = __host
             super().__init__(**defaults)
             self._write()
 

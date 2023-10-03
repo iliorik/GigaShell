@@ -25,13 +25,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install ."[dev,test]"
     - name: black
-      run: black sgpt tests --check
+      run: black giga tests --check
     - name: isort
-      run: isort sgpt tests scripts --check-only
+      run: isort giga tests scripts --check-only
     - name: ruff
-      run: ruff sgpt tests scripts
+      run: ruff giga tests scripts
     - name: mypy
-      run: mypy sgpt
+      run: mypy giga
     - name: unittests
       run: |
         export OPENAI_API_KEY=test_api_key

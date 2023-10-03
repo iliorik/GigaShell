@@ -1,7 +1,7 @@
 #!/bin/sh -e
 set -x
 
-ruff sgpt tests scripts --fix
-black sgpt tests scripts
-isort sgpt tests scripts
+ruff giga tests scripts --fix
+black giga tests scripts
+isort giga tests scripts
 codespell --write-changes

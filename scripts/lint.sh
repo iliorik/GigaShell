@@ -3,8 +3,8 @@
 set -e
 set -x
 
-mypy sgpt
-ruff sgpt tests scripts
-black sgpt tests --check
-isort sgpt tests scripts --check-only
+mypy giga
+ruff giga tests scripts
+black giga tests --check
+isort giga tests scripts --check-only
 codespell

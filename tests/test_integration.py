@@ -1,7 +1,7 @@
 """
 This test module will execute real commands using shell.
-This means it will call sgpt.py with command line arguments.
-Make sure you have your API key in place ~/.cfg/gigashell/.sgptrc
+This means it will call giga.py with command line arguments.
+Make sure you have your API key in place ~/.cfg/gigashell/.gigarc
 or ENV variable OPENAI_API_KEY.
 It is useful for quick tests, saves a bit time.
 """
@@ -19,17 +19,17 @@ from uuid import uuid4
 import typer
 from typer.testing import CliRunner
 
-from sgpt.app import main
-from sgpt.config import cfg
-from sgpt.handlers.handler import Handler
-from sgpt.role import SystemRole
+from giga.app import main
+from giga.config import cfg
+from giga.handlers.handler import Handler
+from giga.role import SystemRole
 
 runner = CliRunner()
 app = typer.Typer()
 app.command()(main)
 
 
-class TestShellGpt(TestCase):
+class TestGigaShell(TestCase):
     @classmethod
     def setUpClass(cls):
         # Response streaming should be enabled for these tests.
@@ -353,16 +353,16 @@ class TestShellGpt(TestCase):
         # assert "command not found" not in result.stdout
         # assert "hello world" in stdout.split("\n")[-1]
 
-    @patch("sgpt.client.OpenAIClient.get_completion")
+    @patch("giga.client.GigaChatClient.get_completion")
     def test_model_option(self, mocked_get_completion):
         dict_arguments = {
             "prompt": "What is the capital of the Czech Republic?",
-            "--model": "gpt-4",
+            "--model": "GigaChat70:latest",
         }
         result = runner.invoke(app, self.get_arguments(**dict_arguments))
         mocked_get_completion.assert_called_once_with(
             messages=ANY,
-            model="gpt-4",
+            model="GigaChat70:latest",
             temperature=0.1,
             top_probability=1.0,
             caching=False,

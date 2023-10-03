@@ -1,5 +1,5 @@
 # GigaShell
-Онлайн-инструмент для повышения продуктивности, работающий на основе больших языковых моделей. Как разработчики, мы можем использовать возможности ИИ для генерации команд оболочки, фрагментов кода, комментариев и документации, среди прочего. Забудьте о шпаргалках и заметках, с помощью этого инструмента вы можете получить точные ответы прямо в своем терминале, и вы, вероятно, обнаружите, что сокращаете свои ежедневные поиски в Google, экономя ваше драгоценное время и усилия. ShellGPT совместим с несколькими платформами и поддерживает все основные операционные системы, включая Linux, macOS и Windows, а также все основные оболочки, такие как PowerShell, CMD, Bash, Zsh, Fish и многие другие.
+Онлайн-инструмент для повышения продуктивности, работающий на основе больших языковых моделей. Как разработчики, мы можем использовать возможности ИИ для генерации команд оболочки, фрагментов кода, комментариев и документации, среди прочего. Забудьте о шпаргалках и заметках, с помощью этого инструмента вы можете получить точные ответы прямо в своем терминале, и вы, вероятно, обнаружите, что сокращаете свои ежедневные поиски в Google, экономя ваше драгоценное время и усилия. GigaShell совместим с несколькими платформами и поддерживает все основные операционные системы, включая Linux, macOS и Windows, а также все основные оболочки, такие как PowerShell, CMD, Bash, Zsh, Fish и многие другие.
 
 <img src="demo_screen_1.png" width="1060"/>
 
@@ -12,7 +12,7 @@ pip install git+https://github.com/Rai220/GigaShell.git
 <!--
 You'll need an OpenAI API key, you can generate one [here](https://beta.openai.com/account/api-keys).
 
-If the`$OPENAI_API_KEY` environment variable is set it will be used, otherwise, you will be prompted for your key which will then be stored in `~/.config/gigashell/.sgptrc`.
+If the`$OPENAI_API_KEY` environment variable is set it will be used, otherwise, you will be prompted for your key which will then be stored in `~/.config/gigashell/.gigarc`.
 -->
 
 ## Usage
@@ -32,7 +32,7 @@ giga "1 hour and 30 minutes to seconds"
 # -> 5,400 seconds
 ```
 ### Summarization and analyzing
-ShellGPT accepts prompt from both stdin and command line argument, you choose the most convenient input method for your preferences. Whether you prefer piping input through the terminal or specifying it directly as arguments, `sgpt` got you covered. This versatile feature is particularly useful when you need to pass file content or pipe output from other commands to the GPT models for summarization or analysis. For example, you can easily generate a git commit message based on a diff:
+GigaShell accepts prompt from both stdin and command line argument, you choose the most convenient input method for your preferences. Whether you prefer piping input through the terminal or specifying it directly as arguments, `giga` got you covered. This versatile feature is particularly useful when you need to pass file content or pipe output from other commands to the LLM models for summarization or analysis. For example, you can easily generate a git commit message based on a diff:
 ```shell
 git diff | giga "Generate git commit message, for my changes"
 # -> Commit message: Implement Model enum and get_edited_prompt()
@@ -52,7 +52,7 @@ giga --shell "make all files in current directory read only"
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
-Shell GPT is aware of OS and `$SHELL` you are using, it will provide shell command for specific system you have. For instance, if you ask `sgpt` to update your system, it will return a command based on your OS. Here's an example using macOS:
+GigaShell is aware of OS and `$SHELL` you are using, it will provide shell command for specific system you have. For instance, if you ask `giga` to update your system, it will return a command based on your OS. Here's an example using macOS:
 ```shell
 giga -s "update my system"
 # -> sudo softwareupdate -i -a
@@ -66,7 +66,7 @@ giga -s "update my system"
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
-We can ask GPT to describe suggested shell command, it will provide a short description of what the command does:
+We can ask LLM to describe suggested shell command, it will provide a short description of what the command does:
 ```shell
 giga -s "show all txt files in current folder"
 # -> ls *.txt
@@ -82,7 +82,7 @@ giga -s "start nginx using docker, forward 443 and 80 port, mount current folder
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
-We can still use pipes to pass input to `sgpt` and get shell commands as output:
+We can still use pipes to pass input to `giga` and get shell commands as output:
 ```shell
 cat data.json | giga -s "curl localhost with provided json"
 # -> curl -X POST -H "Content-Type: application/json" -d '{"a": 1, "b": 2, "c": 3}' http://localhost
@@ -97,7 +97,7 @@ giga -s "using ffmpeg combine multiple videos into one without audio. Video file
 ...
 ```
 ### Shell integration
-Shell integration allows you to use Shell-GPT in your terminal with hotkeys. It is currently available for bash and zsh. It will allow you to have giga completions in your shell history, and also edit suggested commands right away.
+Shell integration allows you to use GigaShell in your terminal with hotkeys. It is currently available for bash and zsh. It will allow you to have giga completions in your shell history, and also edit suggested commands right away.
 
 https://github.com/TheR1D/shell_gpt/assets/16740832/bead0dab-0dd9-436d-88b7-6abfb2c556c1
 
@@ -106,7 +106,7 @@ To install shell integration, run:
 giga --install-integration
 # Restart your terminal to apply changes.
 ```
-This will add few lines to your `.bashrc` or `.zshrc` file. After that, you can use `Ctrl+l` (by default) to invoke Shell-GPT. When you press `Ctrl+l` it will replace you current input line (buffer) with suggested command. You can then edit it and press `Enter` to execute.
+This will add few lines to your `.bashrc` or `.zshrc` file. After that, you can use `Ctrl+l` (by default) to invoke GigaShell. When you press `Ctrl+l` it will replace you current input line (buffer) with suggested command. You can then edit it and press `Enter` to execute.
 
 ### Generating code
 With `--code` parameters we can query only code as output, for example:
@@ -136,7 +136,7 @@ python fizz_buzz.py
 # Fizz
 # ...
 ```
-We can also use pipes to pass input to `sgpt`:
+We can also use pipes to pass input to `giga`:
 ```shell
 cat fizz_buzz.py | giga --code "Generate comments for each line of my code"
 ```
@@ -162,7 +162,7 @@ for i in range(1, 101):
 
 ### Conversational Modes - Overview
 
-Often it is important to preserve and recall a conversation and this is kept track of locally. `sgpt` creates conversational dialogue with each llm completion requested. The dialogue can develop one-by-one (chat mode) or interactively, in a REPL loop (REPL mode). Both ways rely on the same underlying object, called a chat session. The session is located at the [configurable](#runtime-configuration-file) `CHAT_CACHE_PATH`.
+Often it is important to preserve and recall a conversation and this is kept track of locally. `giga` creates conversational dialogue with each llm completion requested. The dialogue can develop one-by-one (chat mode) or interactively, in a REPL loop (REPL mode). Both ways rely on the same underlying object, called a chat session. The session is located at the [configurable](#runtime-configuration-file) `CHAT_CACHE_PATH`.
 
 ### Listing and Showing Chat Sessions 
 
@@ -191,7 +191,7 @@ giga --chat number "please remember my favorite number: 4"
 giga --chat number "what would be my favorite number + 4?"
 # -> Your favorite number is 4, so if we add 4 to it, the result would be 8.
 ```
-You can also use chat sessions to iteratively improve GPT suggestions by providing additional clues.
+You can also use chat sessions to iteratively improve LLM suggestions by providing additional clues.
 ```shell
 giga --chat python_request --code "make an example request to localhost using Python"
 ```
@@ -228,7 +228,7 @@ giga --chat sh "Convert the resulting file into an MP3"
 ```
 
 ### REPL Mode
-There is very handy REPL (read–eval–print loop) mode, which allows you to interactively chat with GPT models. To start a chat session in REPL mode, use the `--repl` option followed by a unique session name. You can also use "temp" as a session name to start a temporary REPL session. Note that `--chat` and `--repl` are using same chat sessions, so you can use `--chat` to start a chat session and then use `--repl` to continue the conversation in REPL mode. REPL mode will also show history of your conversation in the beginning.
+There is very handy REPL (read–eval–print loop) mode, which allows you to interactively chat with LLM models. To start a chat session in REPL mode, use the `--repl` option followed by a unique session name. You can also use "temp" as a session name to start a temporary REPL session. Note that `--chat` and `--repl` are using same chat sessions, so you can use `--chat` to start a chat session and then use `--repl` to continue the conversation in REPL mode. REPL mode will also show history of your conversation in the beginning.
 
 <p align="center">
   <img src="https://s10.gifyu.com/images/repl-demo.gif" alt="gif">
@@ -276,7 +276,7 @@ giga --repl number
 ───── Chat History──────
 user: ###
 Role name: default
-You are Command Line App ShellGPT, a programming and system administration assistant.
+You are Command Line App GigaShell, a programming and system administration assistant.
 You are managing Darwin/MacOS 13.3.1 operating system with zsh shell.
 Provide only plain text without Markdown formatting.
 Do not show any warnings or information regarding your capabilities.
@@ -295,7 +295,7 @@ The sum of your favorite number (4) and my previous response (256) would be 260.
 
 
 ### Roles
-ShellGPT allows you to create custom roles, which can be utilized to generate code, shell commands, or to fulfill your specific needs. To create a new role, use the `--create-role` option followed by the role name. You will be prompted to provide a description for the role, along with other details. This will create a JSON file in `~/.config/gigashell/roles` with the role name. Inside this directory, you can also edit default `sgpt` roles, such as **shell**, **code**, and **default**. Use the `--list-roles` option to list all available roles, and the `--show-role` option to display the details of a specific role. Here's an example of a custom role:
+GigaShell allows you to create custom roles, which can be utilized to generate code, shell commands, or to fulfill your specific needs. To create a new role, use the `--create-role` option followed by the role name. You will be prompted to provide a description for the role, along with other details. This will create a JSON file in `~/.config/gigashell/roles` with the role name. Inside this directory, you can also edit default `giga` roles, such as **shell**, **code**, and **default**. Use the `--list-roles` option to list all available roles, and the `--show-role` option to display the details of a specific role. Here's an example of a custom role:
 ```shell
 giga --create-role json
 # Enter role description: You are JSON generator, provide only valid json as response.
@@ -315,7 +315,7 @@ giga --role json "random: user, password, email, address"
 ```
 
 ### Request cache
-Control cache using `--cache` (default) and `--no-cache` options. This caching applies for all `sgpt` requests to OpenAI API:
+Control cache using `--cache` (default) and `--no-cache` options. This caching applies for all `giga` requests to OpenAI API:
 ```shell
 giga "what are the colors of a rainbow"
 # -> The colors of a rainbow are red, orange, yellow, green, blue, indigo, and violet.
@@ -325,7 +325,7 @@ Next time, same exact query will get results from local cache instantly. Note th
 This is just some examples of what we can do using OpenAI GPT models, I'm sure you will find it useful for your specific use cases.
 
 ### Runtime configuration file
-You can setup some parameters in runtime configuration file `~/.config/gigashell/.sgptrc`:
+You can setup some parameters in runtime configuration file `~/.config/gigashell/.gigarc`:
 ```text
 # Credentionals to access GigaChat
 GIGA_USERNAME=your username
@@ -343,7 +343,7 @@ CACHE_PATH=/tmp/gigashell/cache
 # Request timeout in seconds.
 REQUEST_TIMEOUT=60
 # Default OpenAI model to use.
-DEFAULT_MODEL=gpt-3.5-turbo
+DEFAULT_MODEL=GigaChat70:latest
 # Default color for OpenAI completions.
 DEFAULT_COLOR=magenta
 # Force use system role messages (not recommended).
@@ -355,7 +355,7 @@ DISABLE_STREAMING=false
 ```
 Possible options for `DEFAULT_COLOR`: black, red, green, yellow, blue, magenta, cyan, white, bright_black, bright_red, bright_green, bright_yellow, bright_blue, bright_magenta, bright_cyan, bright_white.
 
-Switch `SYSTEM_ROLES` to force use [system roles](https://help.openai.com/en/articles/7042661-chatgpt-api-transition-guide) messages, this is not recommended, since it doesn't perform well with current GPT models.
+Switch `SYSTEM_ROLES` to force use [system roles](https://help.openai.com/en/articles/7042661-chatgpt-api-transition-guide) messages, this is not recommended, since it doesn't perform well with current LLM models.
 
 ### Full list of arguments
 ```text
@@ -363,7 +363,7 @@ Switch `SYSTEM_ROLES` to force use [system roles](https://help.openai.com/en/art
 │   prompt      [PROMPT]  The prompt to generate completions for.                                             │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --model            TEXT                             OpenAI GPT model to use. [default: gpt-3.5-turbo]       │
+│ --model            TEXT                             GigaChat model to use. [default: GigaChat70:latest]     │
 │ --temperature      FLOAT RANGE [0.0<=x<=2.0]        Randomness of generated output. [default: 0.1]          │
 │ --top-probability  FLOAT RANGE [0.1<=x<=1.0]        Limits highest probable tokens (words). [default: 1.0]  │
 │ --editor                                            Open $EDITOR to provide a prompt. [default: no-editor]  │
@@ -382,7 +382,7 @@ Switch `SYSTEM_ROLES` to force use [system roles](https://help.openai.com/en/art
 │ --list-chats        List all existing chat ids. [default: no-list-chats]                                    │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Role Options ──────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --role         TEXT  System role for GPT model. [default: None]                                             │
+│ --role         TEXT  System role for LLM model. [default: None]                                             │
 │ --create-role  TEXT  Create role. [default: None]                                                           │
 │ --show-role    TEXT  Show role. [default: None]                                                             │
 │ --list-roles         List roles. [default: no-list-roles]                                                   │
@@ -391,7 +391,7 @@ Switch `SYSTEM_ROLES` to force use [system roles](https://help.openai.com/en/art
 
 <!--
 ## LocalAI
-By default, ShellGPT leverages OpenAI's large language models. However, it also provides the flexibility to use locally hosted models, which can be a cost-effective alternative. To use local models, you will need to run your own API server. You can accomplish this by using [LocalAI](https://github.com/go-skynet/LocalAI), a self-hosted, OpenAI-compatible API. Setting up LocalAI allows you to run language models on your own hardware, potentially without the need for an internet connection, depending on your usage. To set up your LocalAI, please follow this comprehensive [guide](https://github.com/TheR1D/shell_gpt/wiki/LocalAI). Remember that the performance of your local models may depend on the specifications of your hardware and the specific language model you choose to deploy.
+By default, GigaShell leverages OpenAI's large language models. However, it also provides the flexibility to use locally hosted models, which can be a cost-effective alternative. To use local models, you will need to run your own API server. You can accomplish this by using [LocalAI](https://github.com/go-skynet/LocalAI), a self-hosted, OpenAI-compatible API. Setting up LocalAI allows you to run language models on your own hardware, potentially without the need for an internet connection, depending on your usage. To set up your LocalAI, please follow this comprehensive [guide](https://github.com/TheR1D/shell_gpt/wiki/LocalAI). Remember that the performance of your local models may depend on the specifications of your hardware and the specific language model you choose to deploy.
 
 ## Docker
 Run the container using the `OPENAI_API_KEY` environment variable, and a docker volume to store cache:
@@ -404,7 +404,7 @@ docker run --rm \
 
 Example of a conversation, using an alias and the `OPENAI_API_KEY` environment variable:
 ```shell
-alias sgpt="docker run --rm --env OPENAI_API_KEY --volume gpt-cache:/tmp/gigashell ghcr.io/ther1d/gigashell"
+alias giga="docker run --rm --env OPENAI_API_KEY --volume gpt-cache:/tmp/gigashell ghcr.io/ther1d/gigashell"
 export OPENAI_API_KEY="your OPENAI API key"
 giga --chat rainbow "what are the colors of a rainbow"
 giga --chat rainbow "inverse the list of your last answer"

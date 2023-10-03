@@ -4,7 +4,7 @@ import unittest
 import requests
 import requests_mock
 
-from sgpt.client import GigaChatClient
+from giga.client import GigaChatClient
 
 
 class TestMain(unittest.TestCase):
@@ -23,7 +23,7 @@ class TestMain(unittest.TestCase):
         self.temperature = 1.0
         self.top_p = 1.0
         self.response_text = "Paris"
-        self.model = "gpt-3.5-turbo"
+        self.model = "GigaChat70:latest"
         self.client = GigaChatClient(self.API_HOST, self.api_key)
 
     @requests_mock.Mocker()
@@ -33,7 +33,6 @@ class TestMain(unittest.TestCase):
         mock.post(self.API_URL, json=mocked_json, status_code=200)
         result = yield from self.client.get_completion(
             messages=[{"role": "user", "content": self.prompt}],
-            model=self.model,
             temperature=self.temperature,
             top_probability=self.top_p,
             caching=False,
@@ -42,7 +41,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual(result, self.response_text)
         expected_json = {
             "messages": [{"role": "user", "content": self.prompt}],
-            "model": "gpt-3.5-turbo",
+            "model": "GigaChat70:latest",
             "temperature": self.temperature,
             "top_p": self.top_p,
         }
@@ -62,7 +61,6 @@ class TestMain(unittest.TestCase):
         with self.assertRaises(requests.exceptions.HTTPError):
             yield from self.client.get_completion(
                 messages=[{"role": "user", "content": self.prompt}],
-                model=self.model,
                 temperature=self.temperature,
                 top_probability=self.top_p,
                 caching=False,

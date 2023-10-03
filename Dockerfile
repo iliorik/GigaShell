@@ -16,4 +16,4 @@ USER app
 
 VOLUME /tmp/gigashell
 
-ENTRYPOINT ["sgpt"]
+ENTRYPOINT ["giga"]

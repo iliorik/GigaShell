@@ -6,12 +6,12 @@ import typer
 from click import BadArgumentUsage, MissingParameter
 from click.types import Choice
 
-from sgpt.config import cfg
-from sgpt.handlers.chat_handler import ChatHandler
-from sgpt.handlers.default_handler import DefaultHandler
-from sgpt.handlers.repl_handler import ReplHandler
-from sgpt.role import DefaultRoles, SystemRole
-from sgpt.utils import get_edited_prompt, install_shell_integration, run_command
+from giga.config import cfg
+from giga.handlers.chat_handler import ChatHandler
+from giga.handlers.default_handler import DefaultHandler
+from giga.handlers.repl_handler import ReplHandler
+from giga.role import DefaultRoles, SystemRole
+from giga.utils import get_edited_prompt, install_shell_integration, run_command
 
 
 def main(
@@ -87,7 +87,7 @@ def main(
     ),
     role: str = typer.Option(
         None,
-        help="System role for GPT model.",
+        help="System role for LLM model.",
         rich_help_panel="Role Options",
     ),
     create_role: str = typer.Option(
@@ -147,7 +147,6 @@ def main(
         # Will be in infinite loop here until user exits with Ctrl+C.
         ReplHandler(repl, role_class).handle(
             prompt,
-            model=model,
             temperature=temperature,
             top_probability=top_probability,
             chat_id=repl,
@@ -157,7 +156,6 @@ def main(
     if chat:
         full_completion = ChatHandler(chat, role_class).handle(
             prompt,
-            model=model,
             temperature=temperature,
             top_probability=top_probability,
             chat_id=chat,
@@ -166,7 +164,6 @@ def main(
     else:
         full_completion = DefaultHandler(role_class).handle(
             prompt,
-            model=model,
             temperature=temperature,
             top_probability=top_probability,
             caching=cache,
@@ -186,7 +183,6 @@ def main(
         elif option == "d":
             DefaultHandler(DefaultRoles.DESCRIBE_SHELL.get_role()).handle(
                 full_completion,
-                model=model,
                 temperature=temperature,
                 top_probability=top_probability,
                 caching=cache,

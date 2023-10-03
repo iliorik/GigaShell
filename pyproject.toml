@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gigashell"
-description = "A command-line productivity tool powered by OpenAI GPT models, will help you accomplish your tasks faster and more efficiently."
-keywords = ["shell", "gpt", "openai", "cli", "productivity", "cheet-sheet"]
+description = "A command-line productivity tool powered by GigaChat models, will help you accomplish your tasks faster and more efficiently."
+keywords = ["shell", "gpt", "openai", "cli", "productivity", "cheet-sheet", "gigachat", "gigachain"]
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.6"
@@ -38,7 +38,7 @@ dependencies = [
 ]
 
 [project.scripts]
-giga = "sgpt:cli"
+giga = "giga:cli"
 
 [project.urls]
 homepage = "https://github.com/Rai220/GigaShell"
@@ -61,14 +61,14 @@ dev = [
 ]
 
 [tool.hatch.version]
-path = "sgpt/__init__.py"
+path = "giga/__init__.py"
 
 [tool.hatch.build.targets.wheel]
-only-include = ["sgpt"]
+only-include = ["giga"]
 
 [tool.hatch.build.targets.sdist]
 only-include = [
-    "sgpt",
+    "giga",
     "tests",
     "README.md",
     "LICENSE",
