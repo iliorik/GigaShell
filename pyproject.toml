@@ -41,9 +41,9 @@ dependencies = [
 giga = "sgpt:cli"
 
 [project.urls]
-homepage = "https://github.com/ther1d/shell_gpt"
-repository = "https://github.com/ther1d/shell_gpt"
-documentation = "https://github.com/TheR1D/shell_gpt/blob/main/README.md"
+homepage = "https://github.com/Rai220/GigaShell"
+repository = "https://github.com/Rai220/GigaShell"
+documentation = "https://github.com/Rai220/GigaShell/blob/main/README.md"
 
 [project.optional-dependencies]
 test = [

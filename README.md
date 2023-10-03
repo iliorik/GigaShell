@@ -1,9 +1,9 @@
 # GigaShell
 Онлайн-инструмент для повышения продуктивности, работающий на основе больших языковых моделей. Как разработчики, мы можем использовать возможности ИИ для генерации команд оболочки, фрагментов кода, комментариев и документации, среди прочего. Забудьте о шпаргалках и заметках, с помощью этого инструмента вы можете получить точные ответы прямо в своем терминале, и вы, вероятно, обнаружите, что сокращаете свои ежедневные поиски в Google, экономя ваше драгоценное время и усилия. ShellGPT совместим с несколькими платформами и поддерживает все основные операционные системы, включая Linux, macOS и Windows, а также все основные оболочки, такие как PowerShell, CMD, Bash, Zsh, Fish и многие другие.
 
-[![Watch the video](https://img.youtube.com/vi/kLmPSyxq-Dw/default.jpg)](https://www.youtube.com/watch?v=kLmPSyxq-Dw)
+![Demo screen](demo_screen_1.png)
 
-Является форком библиотеки ShellGPT, адаптированым для русского языка и работы с GigaChat
+Является форком библиотеки [ShellGPT](https://github.com/TheR1D/shell_gpt), адаптированым для русского языка и работы с GigaChat
 
 ## Installation
 ```shell
@@ -12,7 +12,7 @@ pip install git+https://github.com/Rai220/GigaShell.git
 <!--
 You'll need an OpenAI API key, you can generate one [here](https://beta.openai.com/account/api-keys).
 
-If the`$OPENAI_API_KEY` environment variable is set it will be used, otherwise, you will be prompted for your key which will then be stored in `~/.config/shell_gpt/.sgptrc`.
+If the`$OPENAI_API_KEY` environment variable is set it will be used, otherwise, you will be prompted for your key which will then be stored in `~/.config/gigashell/.sgptrc`.
 -->
 
 ## Usage
@@ -171,8 +171,8 @@ Dialogues had in both REPL and chat mode are saved as chat sessions.
 To list all the sessions from either conversational mode, use the `--list-chats` option:
 ```shell
 giga --list-chats
-# .../shell_gpt/chat_cache/number
-# .../shell_gpt/chat_cache/python_request
+# .../gigashell/chat_cache/number
+# .../gigashell/chat_cache/python_request
 ```
 To show all the messages related to a specific conversation, use the `--show-chat` option followed by the session name:
 ```shell
@@ -295,7 +295,7 @@ The sum of your favorite number (4) and my previous response (256) would be 260.
 
 
 ### Roles
-ShellGPT allows you to create custom roles, which can be utilized to generate code, shell commands, or to fulfill your specific needs. To create a new role, use the `--create-role` option followed by the role name. You will be prompted to provide a description for the role, along with other details. This will create a JSON file in `~/.config/shell_gpt/roles` with the role name. Inside this directory, you can also edit default `sgpt` roles, such as **shell**, **code**, and **default**. Use the `--list-roles` option to list all available roles, and the `--show-role` option to display the details of a specific role. Here's an example of a custom role:
+ShellGPT allows you to create custom roles, which can be utilized to generate code, shell commands, or to fulfill your specific needs. To create a new role, use the `--create-role` option followed by the role name. You will be prompted to provide a description for the role, along with other details. This will create a JSON file in `~/.config/gigashell/roles` with the role name. Inside this directory, you can also edit default `sgpt` roles, such as **shell**, **code**, and **default**. Use the `--list-roles` option to list all available roles, and the `--show-role` option to display the details of a specific role. Here's an example of a custom role:
 ```shell
 giga --create-role json
 # Enter role description: You are JSON generator, provide only valid json as response.
@@ -325,7 +325,7 @@ Next time, same exact query will get results from local cache instantly. Note th
 This is just some examples of what we can do using OpenAI GPT models, I'm sure you will find it useful for your specific use cases.
 
 ### Runtime configuration file
-You can setup some parameters in runtime configuration file `~/.config/shell_gpt/.sgptrc`:
+You can setup some parameters in runtime configuration file `~/.config/gigashell/.sgptrc`:
 ```text
 # Credentionals to access GigaChat
 GIGA_USERNAME=your username
@@ -335,11 +335,11 @@ GIGACHAT_API_HOST=https://...
 # Max amount of cached message per chat session.
 CHAT_CACHE_LENGTH=100
 # Chat cache folder.
-CHAT_CACHE_PATH=/tmp/shell_gpt/chat_cache
+CHAT_CACHE_PATH=/tmp/gigashell/chat_cache
 # Request cache length (amount).
 CACHE_LENGTH=100
 # Request cache folder.
-CACHE_PATH=/tmp/shell_gpt/cache
+CACHE_PATH=/tmp/gigashell/cache
 # Request timeout in seconds.
 REQUEST_TIMEOUT=60
 # Default OpenAI model to use.
@@ -389,6 +389,7 @@ Switch `SYSTEM_ROLES` to force use [system roles](https://help.openai.com/en/art
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
+<!--
 ## LocalAI
 By default, ShellGPT leverages OpenAI's large language models. However, it also provides the flexibility to use locally hosted models, which can be a cost-effective alternative. To use local models, you will need to run your own API server. You can accomplish this by using [LocalAI](https://github.com/go-skynet/LocalAI), a self-hosted, OpenAI-compatible API. Setting up LocalAI allows you to run language models on your own hardware, potentially without the need for an internet connection, depending on your usage. To set up your LocalAI, please follow this comprehensive [guide](https://github.com/TheR1D/shell_gpt/wiki/LocalAI). Remember that the performance of your local models may depend on the specifications of your hardware and the specific language model you choose to deploy.
 
@@ -403,7 +404,7 @@ docker run --rm \
 
 Example of a conversation, using an alias and the `OPENAI_API_KEY` environment variable:
 ```shell
-alias sgpt="docker run --rm --env OPENAI_API_KEY --volume gpt-cache:/tmp/shell_gpt ghcr.io/ther1d/shell_gpt"
+alias sgpt="docker run --rm --env OPENAI_API_KEY --volume gpt-cache:/tmp/gigashell ghcr.io/ther1d/gigashell"
 export OPENAI_API_KEY="your OPENAI API key"
 giga --chat rainbow "what are the colors of a rainbow"
 giga --chat rainbow "inverse the list of your last answer"
@@ -414,3 +415,4 @@ You also can use the provided `Dockerfile` to build your own image:
 ```shell
 docker build -t giga .
 ```
+-->

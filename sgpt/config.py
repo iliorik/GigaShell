@@ -7,9 +7,9 @@ from typing import Any
 from click import UsageError
 
 CONFIG_FOLDER = os.path.expanduser("~/.config")
-SHELL_GPT_CONFIG_FOLDER = Path(CONFIG_FOLDER) / "gigashell"
-SHELL_GPT_CONFIG_PATH = SHELL_GPT_CONFIG_FOLDER / ".gigatrc"
-ROLE_STORAGE_PATH = SHELL_GPT_CONFIG_FOLDER / "roles"
+GIGA_SHELL_CONFIG_FOLDER = Path(CONFIG_FOLDER) / "gigashell"
+GIGA_SHELL_CONFIG_PATH = GIGA_SHELL_CONFIG_FOLDER / ".gigatrc"
+ROLE_STORAGE_PATH = GIGA_SHELL_CONFIG_FOLDER / "roles"
 CHAT_CACHE_PATH = Path(gettempdir()) / "chat_cache"
 CACHE_PATH = Path(gettempdir()) / "cache"
 
@@ -88,4 +88,4 @@ class Config(dict):  # type: ignore
         return value
 
 
-cfg = Config(SHELL_GPT_CONFIG_PATH, **DEFAULT_CONFIG)
+cfg = Config(GIGA_SHELL_CONFIG_PATH, **DEFAULT_CONFIG)

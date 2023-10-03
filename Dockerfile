@@ -9,11 +9,11 @@ COPY . /app
 RUN pip install --no-cache --upgrade pip \
  && pip install --no-cache /app \
  && addgroup --system app && adduser --system --group app \
- && mkdir -p /tmp/shell_gpt \
- && chown -R app:app /tmp/shell_gpt
+ && mkdir -p /tmp/gigashell \
+ && chown -R app:app /tmp/gigashell
 
 USER app
 
-VOLUME /tmp/shell_gpt
+VOLUME /tmp/gigashell
 
 ENTRYPOINT ["sgpt"]

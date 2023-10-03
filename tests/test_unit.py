@@ -4,7 +4,7 @@ import unittest
 import requests
 import requests_mock
 
-from sgpt.client import OpenAIClient
+from sgpt.client import GigaChatClient
 
 
 class TestMain(unittest.TestCase):
@@ -24,7 +24,7 @@ class TestMain(unittest.TestCase):
         self.top_p = 1.0
         self.response_text = "Paris"
         self.model = "gpt-3.5-turbo"
-        self.client = OpenAIClient(self.API_HOST, self.api_key)
+        self.client = GigaChatClient(self.API_HOST, self.api_key)
 
     @requests_mock.Mocker()
     def test_openai_request(self, mock):
