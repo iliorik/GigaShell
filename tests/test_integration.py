@@ -19,10 +19,10 @@ from uuid import uuid4
 import typer
 from typer.testing import CliRunner
 
-from gigashell.app import main
-from gigashell.config import cfg
-from gigashell.handlers.handler import Handler
-from gigashell.role import SystemRole
+from giga.app import main
+from giga.config import cfg
+from giga.handlers.handler import Handler
+from giga.role import SystemRole
 
 runner = CliRunner()
 app = typer.Typer()

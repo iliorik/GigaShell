@@ -7,7 +7,7 @@
 
 ## Installation
 ```shell
-pip install git+https://github.com/Rai220/GigaShell.git
+pip install gigashell
 ```
 <!--
 You'll need an OpenAI API key, you can generate one [here](https://beta.openai.com/account/api-keys).

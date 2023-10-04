@@ -1,4 +1,7 @@
 venv/*
 gigashell/__pycache__/*
 gigashell/handlers/__pycache__/*
+giga/__pycache__/*
+giga/handlers/__pycache__/*
 .vscode/*
+dist/*

@@ -1,12 +1,3 @@
-[tool.poetry]
-name = "gigashell"
-version = "0.9.4.1"
-description = "gigashell"
-authors = ['Konstantin Krestnikov']
-license = "MIT"
-readme = "README.md"
-repository = "https://github.com/Rai220/GigaShell"
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -47,7 +38,7 @@ dependencies = [
 ]
 
 [project.scripts]
-giga = "gigashell:cli"
+giga = "giga:cli"
 
 [project.urls]
 homepage = "https://github.com/Rai220/GigaShell"
@@ -70,14 +61,14 @@ dev = [
 ]
 
 [tool.hatch.version]
-path = "gigashell/__init__.py"
+path = "giga/__init__.py"
 
 [tool.hatch.build.targets.wheel]
-only-include = ["gigashell"]
+only-include = ["giga"]
 
 [tool.hatch.build.targets.sdist]
 only-include = [
-    "gigashell",
+    "giga",
     "tests",
     "README.md",
     "LICENSE",

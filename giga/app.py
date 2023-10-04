@@ -6,12 +6,12 @@ import typer
 from click import BadArgumentUsage, MissingParameter
 from click.types import Choice
 
-from gigashell.config import cfg
-from gigashell.handlers.chat_handler import ChatHandler
-from gigashell.handlers.default_handler import DefaultHandler
-from gigashell.handlers.repl_handler import ReplHandler
-from gigashell.role import DefaultRoles, SystemRole
-from gigashell.utils import get_edited_prompt, install_shell_integration, run_command
+from giga.config import cfg
+from giga.handlers.chat_handler import ChatHandler
+from giga.handlers.default_handler import DefaultHandler
+from giga.handlers.repl_handler import ReplHandler
+from giga.role import DefaultRoles, SystemRole
+from giga.utils import get_edited_prompt, install_shell_integration, run_command
 
 
 def main(
