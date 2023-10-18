@@ -150,7 +150,6 @@ def main(
             temperature=temperature,
             top_probability=top_probability,
             chat_id=repl,
-            caching=cache,
         )
 
     if chat:
@@ -159,14 +158,12 @@ def main(
             temperature=temperature,
             top_probability=top_probability,
             chat_id=chat,
-            caching=cache,
         )
     else:
         full_completion = DefaultHandler(role_class).handle(
             prompt,
             temperature=temperature,
             top_probability=top_probability,
-            caching=cache,
         )
 
     while shell and not stdin_passed:
@@ -185,7 +182,6 @@ def main(
                 full_completion,
                 temperature=temperature,
                 top_probability=top_probability,
-                caching=cache,
             )
             continue
         break

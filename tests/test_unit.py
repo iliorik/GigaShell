@@ -34,8 +34,7 @@ class TestMain(unittest.TestCase):
         result = yield from self.client.get_completion(
             messages=[{"role": "user", "content": self.prompt}],
             temperature=self.temperature,
-            top_probability=self.top_p,
-            caching=False,
+            top_probability=self.top_p
         )
         # TODO: Fix tests with generators.
         self.assertEqual(result, self.response_text)
@@ -62,8 +61,7 @@ class TestMain(unittest.TestCase):
             yield from self.client.get_completion(
                 messages=[{"role": "user", "content": self.prompt}],
                 temperature=self.temperature,
-                top_probability=self.top_p,
-                caching=False,
+                top_probability=self.top_p
             )
 
 
