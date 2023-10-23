@@ -1,72 +1,95 @@
 # GigaShell
-Онлайн-инструмент для повышения продуктивности, работающий на основе больших языковых моделей. Как разработчики, мы можем использовать возможности ИИ для генерации команд оболочки, фрагментов кода, комментариев и документации, среди прочего. Забудьте о шпаргалках и заметках, с помощью этого инструмента вы можете получить точные ответы прямо в своем терминале, и вы, вероятно, обнаружите, что сокращаете свои ежедневные поиски в Google, экономя ваше драгоценное время и усилия. GigaShell совместим с несколькими платформами и поддерживает все основные операционные системы, включая Linux, macOS и Windows, а также все основные оболочки, такие как PowerShell, CMD, Bash, Zsh, Fish и многие другие.
+
+Версия библиотеки [ShellGPT](https://github.com/TheR1D/shell_gpt), доработанная для работы с русским языком и [нейросетевой моделью GigaChat](https://developers.sber.ru/portal/products/gigachat).
+
+GigaShell — кроссплатформенная утилита, которая позволяет обращаться к большим языковым моделям (LLM) из командной строки. Используйте GigaShell для создания команд оболочки, фрагментов кода, комментариев и документации, а так же решения других задач. Утилита поддерживает все основные операционные системы, включая Linux, macOS и Windows, а также различные оболочки, среди которых PowerShell, CMD, Bash, Zsh, Fish и многие другие.
 
 <img src="demo_screen_1.png" width="1060"/>
 
-Является форком библиотеки [ShellGPT](https://github.com/TheR1D/shell_gpt), адаптированым для русского языка и работы с GigaChat
+## Установка
 
-## Installation
+GigaShell можно установить с помощью pip:
+
 ```shell
 pip install gigashell
 ```
-<!--
-You'll need an OpenAI API key, you can generate one [here](https://beta.openai.com/account/api-keys).
 
-If the`$OPENAI_API_KEY` environment variable is set it will be used, otherwise, you will be prompted for your key which will then be stored in `~/.config/gigashell/.gigarc`.
--->
+Для работы вам понадобятся данные для [авторизации запросов к GigaChat API](https://developers.sber.ru/docs/ru/gigachat/api/authorization).
 
-## Usage
-`giga` has a variety of use cases, including simple queries, shell queries, and code queries.
-### Simple queries
-We can use it as normal search engine, asking about anything:
+## Использование
+
+К различным сценариям использования GigaShell можно отнести запросы, генерирование команд оболочки или фрагментов кода, и другие задачи.
+
+Для вызова GigaShell используйте команду `giga`.
+
+### Запросы
+
+Утилиту можно использовать вместо поисковой машины:
+
 ```shell
 giga "nginx default config file location"
 # -> The default configuration file for Nginx is located at /etc/nginx/nginx.conf.
 ```
+
 ```shell
 giga "mass of sun"
 # -> = 1.99 × 10^30 kg
 ```
+
 ```shell
 giga "1 hour and 30 minutes to seconds"
 # -> 5,400 seconds
 ```
-### Summarization and analyzing
-GigaShell accepts prompt from both stdin and command line argument, you choose the most convenient input method for your preferences. Whether you prefer piping input through the terminal or specifying it directly as arguments, `giga` got you covered. This versatile feature is particularly useful when you need to pass file content or pipe output from other commands to the LLM models for summarization or analysis. For example, you can easily generate a git commit message based on a diff:
+
+### Анализ и суммаризация
+
+Вы можете передавать промпты на вход в GigaShell как в виде аргументов команды, так и в виде стандартного ввода (*stdin*). Разнообразие способов ввода полезна если в LLM надо передать содержимое файла или вывод других команд. Такая функциональность упрощает обработку данных из различных источников и позволяет сфокусироваться на главном.
+
+Например, так вы можете генерировать сообщения для коммитов на основе сделанных изменений:
+
 ```shell
 git diff | giga "Generate git commit message, for my changes"
 # -> Commit message: Implement Model enum and get_edited_prompt()
 ```
-You can analyze logs from various sources by passing them using stdin or command line arguments, along with a user-friendly prompt. This enables you to quickly identify errors and get suggestions for possible solutions:
+
+Вы можете анализировать различные логи, передавая их в виде аргументов или стандартного ввода совместно с понятным промптом. Таким образом вы сможете быстро выделять ошибки и узнавать о способах их исправления:
+
 ```shell
 docker logs -n 20 container_name | giga "check logs, find errors, provide possible solutions"
 # ...
 ```
-This powerful feature simplifies the process of managing and understanding data from different sources, making it easier for you to focus on what really matters: improving your projects and applications.
 
-### Shell commands
-Have you ever found yourself forgetting common shell commands, such as `chmod`, and needing to look up the syntax online? With `--shell` or shortcut `-s` option, you can quickly find and execute the commands you need right in the terminal.
+### Команды оболочки
+
+Опция `--shell`, сокращенно `--s`, позволяет находить и выполнять частоиспользуемые команды вроде `chmod` с помощью промптов в командной строке:
+
 ```shell
 giga --shell "make all files in current directory read only"
 # -> chmod 444 *
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
-GigaShell is aware of OS and `$SHELL` you are using, it will provide shell command for specific system you have. For instance, if you ask `giga` to update your system, it will return a command based on your OS. Here's an example using macOS:
+
+GigaShell автоматически определяет вашу операционную систему и оболочку (`$SHELL`), и вызывает подходящую команду. Так, если вы обратитесь к `giga` с командой обновить систему, утилита вызовет соответствующую ОС команду. Пример для macOS:
+
 ```shell
 giga -s "update my system"
 # -> sudo softwareupdate -i -a
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
-The same prompt, when used on Ubuntu, will generate a different suggestion:
+
+Тот же промпт, использованный в Ubuntu, даст другой результат:
+
 ```shell
 giga -s "update my system"
 # -> sudo apt update && sudo apt upgrade -y
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
-We can ask LLM to describe suggested shell command, it will provide a short description of what the command does:
+
+Вы можете попросить LLM предоставить краткое описание команды:
+
 ```shell
 giga -s "show all txt files in current folder"
 # -> ls *.txt
@@ -75,19 +98,25 @@ giga -s "show all txt files in current folder"
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
-Let's try some docker containers:
+
+Пример работы с docker-контейнерами: 
+
 ```shell
 giga -s "start nginx using docker, forward 443 and 80 port, mount current folder with index.html"
 # -> docker run -d -p 443:443 -p 80:80 -v $(pwd):/usr/share/nginx/html nginx
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
-We can still use pipes to pass input to `giga` and get shell commands as output:
+
+Вы можете вызывать команды оболочки с использованные данных, переданных на вход в `giga`:
+
 ```shell
 cat data.json | giga -s "curl localhost with provided json"
 # -> curl -X POST -H "Content-Type: application/json" -d '{"a": 1, "b": 2, "c": 3}' http://localhost
-````
-We can apply additional shell magic in our prompt, in this example passing file names to ffmpeg:
+```
+
+Кроме того возможно и более находчивое использование оболочки. Например, вы можете передать имена файлов в ffmpeg:
+
 ```shell
 ls
 # -> 1.mp4 2.mp4 3.mp4
@@ -96,23 +125,33 @@ giga -s "using ffmpeg combine multiple videos into one without audio. Video file
 # -> [E]xecute, [D]escribe, [A]bort: e
 ...
 ```
-### Shell integration
-Shell integration allows you to use GigaShell in your terminal with hotkeys. It is currently available for bash and zsh. It will allow you to have giga completions in your shell history, and also edit suggested commands right away.
+
+### Встраивание в оболочку
+
+> [!NOTE]
+> Функциональность доступна только в bash и zsh.
+
+Встраивание в оболочку позволяет вызывать GigaShell в командной строке с помощью горячих клавиш. Встраивание позволяет получить предложения `giga` в истории команд оболочки, наряду с возможностью редактирования команд на лету.
 
 https://github.com/TheR1D/shell_gpt/assets/16740832/bead0dab-0dd9-436d-88b7-6abfb2c556c1
 
-To install shell integration, run:
+Чтобы встроить `giga` в оболочку, выполните команду:
+
 ```shell
 giga --install-integration
 # Restart your terminal to apply changes.
 ```
-This will add few lines to your `.bashrc` or `.zshrc` file. After that, you can use `Ctrl+l` (by default) to invoke GigaShell. When you press `Ctrl+l` it will replace you current input line (buffer) with suggested command. You can then edit it and press `Enter` to execute.
 
-### Generating code
-With `--code` parameters we can query only code as output, for example:
+Команда модифицирует конфигурационный файл вашей оболочки: `.bashrc` или `.zshrc`. После чего вы сможете вызвать GigaShell с помощью сочетания клавиш CTRL+L (по умолчанию). При нажатии клавиш утилита возьмет из буфера введенную строку и заменит ее на предложенную команду. Вы можете изменить команду и выполнить ее, нажав ENTER.
+
+### Генерирование кода
+
+Используйте опцию `--code`, чтобы получить код в результате работы команды:
+
 ```shell
 giga --code "Solve classic fizz buzz problem using Python"
 ```
+
 ```python
 for i in range(1, 101):
     if i % 3 == 0 and i % 5 == 0:
@@ -124,7 +163,9 @@ for i in range(1, 101):
     else:
         print(i)
 ```
-Since it is valid python code, we can redirect the output to file:
+
+На выходе получается валидный код на Python, который можно записать в файл:
+
 ```shell
 giga --code "solve classic fizz buzz problem using Python" > fizz_buzz.py
 python fizz_buzz.py
@@ -136,10 +177,13 @@ python fizz_buzz.py
 # Fizz
 # ...
 ```
-We can also use pipes to pass input to `giga`:
+
+Вы также можете передавать данные на вход в `giga`:
+
 ```shell
 cat fizz_buzz.py | giga --code "Generate comments for each line of my code"
 ```
+
 ```python
 # Loop through numbers 1 to 100
 for i in range(1, 101):
@@ -160,21 +204,26 @@ for i in range(1, 101):
         print(i)
 ```
 
-### Conversational Modes - Overview
+### Режимы разговора с моделью Conversational Modes - Overview
 
-Often it is important to preserve and recall a conversation and this is kept track of locally. `giga` creates conversational dialogue with each llm completion requested. The dialogue can develop one-by-one (chat mode) or interactively, in a REPL loop (REPL mode). Both ways rely on the same underlying object, called a chat session. The session is located at the [configurable](#runtime-configuration-file) `CHAT_CACHE_PATH`.
+GigaShell сохраняет и позволяет восстановить все разговоры с моделью
 
-### Listing and Showing Chat Sessions 
+GigaShell может работать как с единичными запросами к модели (режим чата) так и в режиме интерактивного обмена сообщениями с моделью (режим REPL). Независимо от выбранного режима утилита сохраняет все переданные сообщения в отдельных разговорных сессиях. Файлы сессий хранятся в папке, заданной в [конфигурационном файле](#параметры-работы-утилиты) в параметре `CHAT_CACHE_PATH`.
 
-Dialogues had in both REPL and chat mode are saved as chat sessions.
+### Просмотр списка и отдельных разговорных сессий
 
-To list all the sessions from either conversational mode, use the `--list-chats` option:
+Сообщения переданные как в режиме чата, так и в режиме REPL, сохраняются в формате разговорных сессий.
+
+Для отображения списка всех разговорных сессий (независимо от режима), используйте опцию `--list-chats`:
+
 ```shell
 giga --list-chats
 # .../gigashell/chat_cache/number
 # .../gigashell/chat_cache/python_request
 ```
-To show all the messages related to a specific conversation, use the `--show-chat` option followed by the session name:
+
+Для просмотра всех сообщений отдельного разговора используйте опцию `--show-chat` и передайте название сессии:
+
 ```shell
 giga --show-chat number
 # user: please remember my favorite number: 4
@@ -183,28 +232,36 @@ giga --show-chat number
 # assistant: Your favorite number is 4, so if we add 4 to it, the result would be 8.
 ```
 
-### Chat Mode
-To start a chat session, use the `--chat` option followed by a unique session name and a prompt. You can also use "temp" as a session name to start a temporary chat session.
+### Режим чата
+
+Для начала чата используйте опцию `--chat` и передайте уникальное название сессии и промпт. Для запуска временной сессии используйте значение `temp` в качестве названия.
+
 ```shell
 giga --chat number "please remember my favorite number: 4"
 # -> I will remember that your favorite number is 4.
 giga --chat number "what would be my favorite number + 4?"
 # -> Your favorite number is 4, so if we add 4 to it, the result would be 8.
 ```
-You can also use chat sessions to iteratively improve LLM suggestions by providing additional clues.
+
+Используйте сессии чата и дополнительные подсказки, чтобы итеративно улучшать предложения LLM:
+
 ```shell
 giga --chat python_request --code "make an example request to localhost using Python"
 ```
+
 ```python
 import requests
 
 response = requests.get('http://localhost')
 print(response.text)
 ```
-Asking AI to add a cache to our request.
+
+Попросите модель доработать код и добавить в него кэш:
+
 ```shell
 giga --chat python_request --code "add caching"
 ```
+
 ```python
 import requests
 from cachecontrol import CacheControl
@@ -215,7 +272,9 @@ cached_sess = CacheControl(sess)
 response = cached_sess.get('http://localhost')
 print(response.text)
 ```
-We can use `--code` or `--shell` options to initiate `--chat`, so you can keep refining the results:
+
+Используйте опции `--code` or `--shell` чтобы инициировать `--chat` и продолжить улучшать ответы:
+
 ```shell
 giga --chat sh --shell "What are the files in this directory?"
 # -> ls
@@ -227,8 +286,13 @@ giga --chat sh "Convert the resulting file into an MP3"
 # -> ffmpeg -i output.mp4 -vn -acodec libmp3lame -ac 2 -ab 160k -ar 48000 final_output.mp3
 ```
 
-### REPL Mode
-There is very handy REPL (read–eval–print loop) mode, which allows you to interactively chat with LLM models. To start a chat session in REPL mode, use the `--repl` option followed by a unique session name. You can also use "temp" as a session name to start a temporary REPL session. Note that `--chat` and `--repl` are using same chat sessions, so you can use `--chat` to start a chat session and then use `--repl` to continue the conversation in REPL mode. REPL mode will also show history of your conversation in the beginning.
+### Режим REPL
+
+Утилита может работать в режиме REPL (*read–eval–print loop*), который позволяет вести интерактивный обмен сообщениями с нейросетевой моделью.
+
+Для начала чата в этом режиме используйте опцию `--repl` и передайте уникальное название сессии или используйте значение `temp` в качестве названия, чтобы начать временную сессию в режиме REPL. 
+
+Режимы `--chat` и `--repl` работают с одним списком сессий. Благодаря этому вы можете инициировать сессию с помощью опции `--chat` и продолжить работать с ней в режиме REPL с помощью опции `--repl`. При запуске режима REPL отображается история ваших чатов, так же как при запуске режима чата.
 
 <p align="center">
   <img src="https://s10.gifyu.com/images/repl-demo.gif" alt="gif">
@@ -242,7 +306,9 @@ REPL stands for Read-Eval-Print Loop. It is a programming environment ...
 >>> How can I use Python with REPL?
 To use Python with REPL, you can simply open a terminal or command prompt ...
 ```
-REPL mode can work with `--shell` and `--code` options, which makes it very handy for interactive shell commands and code generation:
+
+В REPL-режиме вы можете использовать опции `--shell` и `--code`, что будет полезно для вызова команд оболочки и генерирования кода:
+
 ```text
 giga --repl temp --shell
 Entering shell REPL mode, type [e] to execute commands or press Ctrl+C to exit.
@@ -255,7 +321,9 @@ ls -lhS
 >>> e (enter just e to execute commands, or d to describe them)
 ...
 ```
-Example of using REPL mode to generate code:
+
+Пример использования режима для генерирования кода:
+
 ```text
 giga --repl temp --code
 Entering REPL mode, press Ctrl+C to exit.
@@ -269,7 +337,7 @@ response = requests.get('https://localhost:443')
 print(response.text)
 ```
 
-### Picking up on a chat mode conversation with REPL mode
+### Использование режима REPL для продолжения разговора, начатого в режиме чата
 
 ```text
 giga --repl number
@@ -293,9 +361,20 @@ Entering REPL mode, press Ctrl+C to exit.
 The sum of your favorite number (4) and my previous response (256) would be 260.
 ```
 
+### Создание ролей
 
-### Roles
-GigaShell allows you to create custom roles, which can be utilized to generate code, shell commands, or to fulfill your specific needs. To create a new role, use the `--create-role` option followed by the role name. You will be prompted to provide a description for the role, along with other details. This will create a JSON file in `~/.config/gigashell/roles` with the role name. Inside this directory, you can also edit default `giga` roles, such as **shell**, **code**, and **default**. Use the `--list-roles` option to list all available roles, and the `--show-role` option to display the details of a specific role. Here's an example of a custom role:
+GigaShell дает возможность создавать собственные роли, с помощью которых вы сможете не только генерировать код или команды оболочки, но и решать другие нетиповые задачи.
+
+Для создания роли вызовите `giga` с опцией `--create-role` и укажите после опции имя роли. Утилита предложит дать краткое описание и указать подробности роли.
+
+Все доступные роли хранятся в отдельных JSON-файлах в папке `~/.config/gigashell/roles`. В этой папке вы также можете найти и отредактировать роли по умолчанию: **shell**, **code** и **default**.
+
+Для просмотра списка всех ролей используйте опцию `--list-roles`.
+
+Для просмотра подробной информации об определенной роли используйте опцию `--show-role`.
+
+Пример:
+
 ```shell
 giga --create-role json
 # Enter role description: You are JSON generator, provide only valid json as response.
@@ -314,105 +393,84 @@ giga --role json "random: user, password, email, address"
 }
 ```
 
-### Request cache
-Control cache using `--cache` (default) and `--no-cache` options. This caching applies for all `giga` requests to OpenAI API:
+### Кэш запросов
+
+Для управления кэшэм запросов используйте опции `--cache` (по умолчанию) и `--no-cache`. Кэширование запросов применяется для всех запросов утилиты к Open API.
+
+Пример:
+
 ```shell
 giga "what are the colors of a rainbow"
 # -> The colors of a rainbow are red, orange, yellow, green, blue, indigo, and violet.
 ```
-Next time, same exact query will get results from local cache instantly. Note that `giga "what are the colors of a rainbow" --temperature 0.5` will make a new request, since we didn't provide `--temperature` (same applies to `--top-probability`) on previous request.
 
-This is just some examples of what we can do using OpenAI GPT models, I'm sure you will find it useful for your specific use cases.
+При повторении запроса GigaShell сразу вернет кэшированный ответ. При этом запрос вида `giga "what are the colors of a rainbow" --temperature 0.5` будет определен как новый, так как первый запрос был выполнен без опции `--temperature`. Это же касается опции `--top-probability`.
 
-### Runtime configuration file
-You can setup some parameters in runtime configuration file `~/.config/gigashell/.gigarc`:
+### Параметры работы утилиты
+
+Вы можете задать параметры работы утилиты (*runtime*) в отдельном конфигурационном файле `~/.config/gigashell/.gigarc`:
+
 ```text
-# Credentionals to access GigaChat
+# Авторизационные данные для доступа к GigaChat.
 GIGA_USERNAME=your username
 GIGA_PASSWORD=your password
-# OpenAI host, useful if you would like to use proxy.
+# Хост GigaChat host. Используйте при проксировании запросов.
 GIGACHAT_API_HOST=https://...
-# Max amount of cached message per chat session.
+# Максимальное число кэшированных сообщений в разговорной сессии.
 CHAT_CACHE_LENGTH=100
-# Chat cache folder.
+# Папка, в которой хранится кэш разговорной сессии.
 CHAT_CACHE_PATH=/tmp/gigashell/chat_cache
-# Request cache length (amount).
+# Количество символов в кэше запросов.
 CACHE_LENGTH=100
-# Request cache folder.
+# Папка, в которой хранится кэш запросов.
 CACHE_PATH=/tmp/gigashell/cache
-# Request timeout in seconds.
+# Время ожидания ответа на запрос в секундах.
 REQUEST_TIMEOUT=60
-# Default OpenAI model to use.
+# Модель GigaChat, используемая по умолчанию.
 DEFAULT_MODEL=GigaChat70:latest
-# Default color for OpenAI completions.
+# Цвет ответов GigaChat по умолчанию.
 DEFAULT_COLOR=magenta
-# Force use system role messages (not recommended).
+# Принудительное использование сообщений системных ролей GigaChat (не рекомендуется).
 SYSTEM_ROLES=false
-# When in --shell mode, default to "Y" for no input.
+# Использование "Y" в режиме оболочки (опция --shell).
 DEFAULT_EXECUTE_SHELL_CMD=false
-# Disable streaming of responses
+# Отключение потоковой передачи ответов.
 DISABLE_STREAMING=false
 ```
-Possible options for `DEFAULT_COLOR`: black, red, green, yellow, blue, magenta, cyan, white, bright_black, bright_red, bright_green, bright_yellow, bright_blue, bright_magenta, bright_cyan, bright_white.
 
-Switch `SYSTEM_ROLES` to force use [system roles](https://help.openai.com/en/articles/7042661-chatgpt-api-transition-guide) messages, this is not recommended, since it doesn't perform well with current LLM models.
+Возможные значения параметра `DEFAULT_COLOR`: black, red, green, yellow, blue, magenta, cyan, white, bright_black, bright_red, bright_green, bright_yellow, bright_blue, bright_magenta, bright_cyan, bright_white.
 
-### Full list of arguments
+Включите `SYSTEM_ROLES` для принудительного использования системных ролей (`user`, `assistant`). Не рекомендуется использовать из-за возможных проблем при работе с актуальными моделями LLM.
+
+### Список параметров утилиты
+
 ```text
-╭─ Arguments ─────────────────────────────────────────────────────────────────────────────────────────────────╮
-│   prompt      [PROMPT]  The prompt to generate completions for.                                             │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --model            TEXT                             GigaChat model to use. [default: GigaChat70:latest]     │
-│ --temperature      FLOAT RANGE [0.0<=x<=2.0]        Randomness of generated output. [default: 0.1]          │
-│ --top-probability  FLOAT RANGE [0.1<=x<=1.0]        Limits highest probable tokens (words). [default: 1.0]  │
-│ --editor                                            Open $EDITOR to provide a prompt. [default: no-editor]  │
-│ --cache                                             Cache completion results. [default: cache]              │
-│ --help                                              Show this message and exit.                             │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-╭─ Assistance Options ────────────────────────────────────────────────────────────────────────────────────────╮
-│ --shell  -s                 Generate and execute shell commands.                                            │
-│ --describe-shell  -d        Describe a shell command.                                                       │
-│ --code       --no-code      Generate only code. [default: no-code]                                          │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-╭─ Chat Options ──────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --chat        TEXT  Follow conversation with id, use "temp" for quick session. [default: None]              │
-│ --repl        TEXT  Start a REPL (Read–eval–print loop) session. [default: None]                            │
-│ --show-chat   TEXT  Show all messages from provided chat id. [default: None]                                │
-│ --list-chats        List all existing chat ids. [default: no-list-chats]                                    │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-╭─ Role Options ──────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --role         TEXT  System role for LLM model. [default: None]                                             │
-│ --create-role  TEXT  Create role. [default: None]                                                           │
-│ --show-role    TEXT  Show role. [default: None]                                                             │
-│ --list-roles         List roles. [default: no-list-roles]                                                   │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Arguments ───────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│   prompt      [PROMPT]  Промпт, который будет использован для генерирования ответа.                                   │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Опции ───────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --model            TEXT                             Модель GigaChat. [по умолчанию: GigaChat70:latest]                │
+│ --temperature      FLOAT RANGE [0.0<=x<=2.0]        Случайность сгенерированного ответа. [по умолчанию: 0.1]          │
+│ --top-probability  FLOAT RANGE [0.1<=x<=1.0]        Вероятностная масса токенов. [по умолчанию: 1.0]                  │
+│ --editor                                            Открыть $EDITOR чтобы задать промпт. [по умолчанию: no-editor]    │
+│ --cache                                             Cache completion results. [по умолчанию: cache]                   │
+│ --help                                              Show this message and exit.                                       │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Вспомогательные опции ───────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --shell  -s                 Генерирование и выполнение команд оболочки.                                               │
+│ --describe-shell  -d        Вывод описания команды оболочки.                                                          │
+│ --code       --no-code      Генерирование только кода. [по умолчанию: no-code]                                        │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Опции чата ──────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --chat        TEXT  Продолжить разгор по заданному id. Для быстрых серссий используйте id "temp". [по умолчанию: None]│
+│ --repl        TEXT  Начать сессию REPL (Read–eval–print loop). [по умолчанию: None]                                   │
+│ --show-chat   TEXT  Вывести все сообщения в разговоре по заданному id. [по умолчанию: None]                           │
+│ --list-chats        Вывести список всех доступных id разговоров. [по умолчанию: no-list-chats]                        │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Опции ролей ─────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --role         TEXT  Системная роль LLM. [по умолчанию: None]                                                         │
+│ --create-role  TEXT  Создать роль. [по умолчанию: None]                                                               │
+│ --show-role    TEXT  Показать описание роли. [по умолчанию: None]                                                     │
+│ --list-roles         Вывести список доступных ролей. [по умолчанию: no-list-roles]                                    │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
-
-<!--
-## LocalAI
-By default, GigaShell leverages OpenAI's large language models. However, it also provides the flexibility to use locally hosted models, which can be a cost-effective alternative. To use local models, you will need to run your own API server. You can accomplish this by using [LocalAI](https://github.com/go-skynet/LocalAI), a self-hosted, OpenAI-compatible API. Setting up LocalAI allows you to run language models on your own hardware, potentially without the need for an internet connection, depending on your usage. To set up your LocalAI, please follow this comprehensive [guide](https://github.com/TheR1D/shell_gpt/wiki/LocalAI). Remember that the performance of your local models may depend on the specifications of your hardware and the specific language model you choose to deploy.
-
-## Docker
-Run the container using the `OPENAI_API_KEY` environment variable, and a docker volume to store cache:
-```shell
-docker run --rm \
-           --env OPENAI_API_KEY="your OPENAI API key" \
-           --volume gpt-cache:/tmp/shell_gpt \
-       ghcr.io/ther1d/shell_gpt --chat rainbow "what are the colors of a rainbow"
-```
-
-Example of a conversation, using an alias and the `OPENAI_API_KEY` environment variable:
-```shell
-alias giga="docker run --rm --env OPENAI_API_KEY --volume gpt-cache:/tmp/gigashell ghcr.io/ther1d/gigashell"
-export OPENAI_API_KEY="your OPENAI API key"
-giga --chat rainbow "what are the colors of a rainbow"
-giga --chat rainbow "inverse the list of your last answer"
-giga --chat rainbow "translate your last answer in french"
-```
-
-You also can use the provided `Dockerfile` to build your own image:
-```shell
-docker build -t giga .
-```
--->
