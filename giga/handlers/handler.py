@@ -11,8 +11,9 @@ class Handler:
     def __init__(self, role: SystemRole) -> None:
         self.client = GigaChatClient(
             cfg.get("GIGACHAT_API_HOST"),
-            cfg.get("GIGA_USERNAME"),
-            cfg.get("GIGA_PASSWORD"),
+            #cfg.get("GIGA_USERNAME"),
+            #cfg.get("GIGA_PASSWORD"),
+            cfg.get("GIGA_CREDENTIALS"),
         )
         self.role = role
         self.color = cfg.get("DEFAULT_COLOR")
