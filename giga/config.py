@@ -58,7 +58,7 @@ class Config(dict):  # type: ignore
             if not defaults.get("GIGA_PASSWORD") and not os.getenv("GIGA_PASSWORD"):
                 __password = getpass(prompt="Please enter GigaChat password: ")
                 defaults["GIGA_PASSWORD"] = __password
-
+            '''
             if not defaults.get("GIGACHAT_API_HOST") and not os.getenv(
                 "GIGACHAT_API_HOST"
             ):
@@ -69,7 +69,7 @@ class Config(dict):  # type: ignore
                 if __host == "":
                     __host = __default_host
                 defaults["GIGACHAT_API_HOST"] = __host
-                '''
+                
             super().__init__(**defaults)
             self._write()
 
