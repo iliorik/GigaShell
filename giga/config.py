@@ -48,7 +48,7 @@ class Config(dict):  # type: ignore
             config_path.parent.mkdir(parents=True, exist_ok=True)
             # Don't write API key to config file if it is in the environment.
             if not defaults.get("GIGA_CREDENTIALS") and not os.getenv("GIGA_CREDENTIALS"):
-                __username = input("Please enter GigaChat credentials: ")
+                __credentials = input("Please enter GigaChat credentials: ")
                 defaults["GIGA_CREDENTIALS"] = __credentials
             '''
             if not defaults.get("GIGA_USERNAME") and not os.getenv("GIGA_USERNAME"):
