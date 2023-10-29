@@ -83,7 +83,7 @@ class Config(dict):  # type: ignore
         with open(self.config_path, "r", encoding="utf-8") as file:
             for line in file:
                 if not line.startswith("#"):
-                    key, value = line.strip().split("=")
+                    key, value = line.strip().split("=", 1)
                     self[key] = value
 
     def get(self, key: str) -> str:  # type: ignore
