@@ -412,8 +412,8 @@ giga "what are the colors of a rainbow"
 
 ```text
 # Авторизационные данные для доступа к GigaChat.
-GIGA_USERNAME=your username
-GIGA_PASSWORD=your password
+GIGA_CREDENTIALS=[Client Secret]
+GIGACHAT_API_HOST=https://wmapi-dev.saluteai-pd.sberdevices.ru/v1/
 # Хост GigaChat host. Используйте при проксировании запросов.
 GIGACHAT_API_HOST=https://...
 # Максимальное число кэшированных сообщений в разговорной сессии.
