@@ -413,9 +413,8 @@ giga "what are the colors of a rainbow"
 ```text
 # Авторизационные данные для доступа к GigaChat.
 GIGA_CREDENTIALS=[Client Secret]
-GIGACHAT_API_HOST=https://wmapi-dev.saluteai-pd.sberdevices.ru/v1/
 # Хост GigaChat host. Используйте при проксировании запросов.
-GIGACHAT_API_HOST=https://...
+GIGACHAT_API_HOST=https://wmapi-dev.saluteai-pd.sberdevices.ru/v1/
 # Максимальное число кэшированных сообщений в разговорной сессии.
 CHAT_CACHE_LENGTH=100
 # Папка, в которой хранится кэш разговорной сессии.
